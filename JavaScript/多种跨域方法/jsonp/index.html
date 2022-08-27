@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 封装一个jsonp函数，方便统一管理
+        function jsonp({url, params, callback}) {
+            // 返回一个promise，方便进行异步调用
+            return new Promise((resolve, reject) => {
+                // 在页面创建一个新的script标签
+                let script = document.createElement('script')
+                // 声明一个回调函数
+                window[callback] = function (data) {
+                    resolve(data)
+                    // 收到返回值后，移除创建的标签
+                    document.body.removeChild(script)
+                }
+                // 获取要传递过去的所有参数（包括回调函数的函数名）
+                params = {...params, callback}
+                let arr = []
+                for(let key in params) {
+                    arr.push(`${key}=${params[key]}`)
+                }
+                // 拼接url与参数
+                script.src = `${url}?${arr.join('&')}`
+                document.body.appendChild(script)
+            })
+        }
+
+        jsonp({
+            url: 'http://localhost:3300/jsonp',
+            params: {
+                a: 'this'
+            },
+            callback: 'show'
+        }).then(data => {
+            console.log(data)
+        })
+    </script>
+</body>
+</html>
