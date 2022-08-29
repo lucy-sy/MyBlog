@@ -6,6 +6,7 @@ import Queue from "./Queue.js";
  *@ClassAuthor: lusy
  *@Date: 2022-08-28 00:14:16
 */
+// 循环队列
 function hotPotato(nameList, nums) {
     // 新建一个队列
     let queue = new Queue()
