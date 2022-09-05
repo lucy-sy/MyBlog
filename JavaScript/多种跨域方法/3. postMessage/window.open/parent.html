@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>parent</title>
+</head>
+<body>
+    <button id="parentBtn" onclick="openChild()">打开child窗口</button>
+    <div id="parent"></div>
+</body>
+<script>
+    function openChild() {
+        var childWindow = window.open("http://localhost:4000/child.html")
+        window.onmessage = function(e) {
+            var parent = document.getElementById("parent")
+            parent.innerText = e.data
+            childWindow.postMessage("parent向child传递消息：你可以关闭自己了", "http://localhost:4000")
+        }
+    }
+     
+</script>
+</html>

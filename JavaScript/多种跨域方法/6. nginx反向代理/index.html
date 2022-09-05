@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nginx反向代理</title>
+</head>
+<body>
+    <button id="btn1" onclick="send('server1')">向4000端口请求</button>
+    <button id="btn2" onclick="send('server2')">向5000端口请求</button>
+    <div id="content"></div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function send(port) {
+            var content = document.getElementById("content")
+            // 访问nginx代理服务器，nginx根据定义的不同接口对应的不同服务器，将信息转发到响应服务器上
+            // nginx代理服务器（http://localhost:81）
+            /**
+             * nginx中：
+             *  接口/server1 对应的是 http://localhost:4000服务器
+             *  接口/server2 对应的是 http://localhost:5000服务器
+             * 
+             */
+            axios({
+                method: 'POST',
+                url: `http://localhost:81/${port}`,
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                params: {
+                    username: 'admin',
+                    password: 'admin'
+                }
+            }).then(data => {
+                console.log(data)
+            }).catch(error => {
+                console.log(error)
+            });
+        }
+    </script>
+</body>
+</html>

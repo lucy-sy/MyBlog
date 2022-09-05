@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父窗口 a</title>
+</head>
+<body>
+    <script>
+
+        /**
+         * 发送方的代码用法：
+         *  receiveWindow.postMessage(message, targetOrigin, [transfer]);
+         * 1、receiveWindow是接收方的window对象。
+         *      1、window.open()方法返回的值是打开页面的window对象；
+         *      2、iframe元素的contentWindow属性能获得iframe标签内页面的window对象
+         * 2、message是你要发送到其他window的数据。
+         * 3、targetOrigin是接收方域，可指定该值（一般为接收方页面的window.origin）
+         *
+         */
+        
+         
+         /**
+          * 接收方监听message事件：
+          *  window.onmessage = function(e){ }
+          * 1、参数e为message实例，里面包含了data、origin、source等属性
+          *     1、data是发送方发送的message；
+          *     2、origin是发送方所属的域；
+          *     3、source是发送方的window对象的引用；
+          */
+
+
+        function load() {
+            var frame = document.getElementById("frame")
+            frame.contentWindow.postMessage("a要向b传递信息", "http://localhost:4000")
+        }
+        window.onmessage = function(e) {
+            var content = document.getElementById("content")
+            content.innerText = e.data
+        }
+    </script>
+    <button onclick="load()">向子窗口传递信息</button>
+    <div id="content"></div>
+    <iframe id="frame" src="http://localhost:4000/b.html" sandbox="allow-same-origin allow-scripts"></iframe>
+</body>
+</html>

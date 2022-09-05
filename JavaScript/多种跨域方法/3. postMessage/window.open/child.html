@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>child</title>
+</head>
+<body>
+    <div id="child"></div>
+    <button id="childBtn" onclick="closeChild()">关闭child窗口，向parent传递消息</button>
+</body>
+<script>
+    window.onload = function() {
+        window.opener.postMessage("child向parent传递消息：我已经打开了", "http://localhost:3000")
+    }
+    window.onmessage = function(e) {
+        var child = document.getElementById("child")
+        child.innerText = e.data
+    }
+    function closeChild() {
+        window.opener.postMessage("child向parent传递消息：我关闭了自己", "http://localhost:3000")
+        window.close()
+    }
+</script>
+</html>
+
+

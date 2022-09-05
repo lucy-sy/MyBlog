@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket</title>
+</head>
+<body>
+    <h1>WebSocket</h1>
+    <button id="btn" onclick="connect_server()">点击建立跨域连接</button>
+    <div id="show"></div>
+    <script>
+        var show = document.getElementById("show")
+        function connect_server() {
+            // 建立websocket连接
+            var ws = new WebSocket("ws://localhost:3000")
+            ws.onopen = function() {
+                // 向服务器发送消息
+                ws.send("OK")
+            }
+            // 接收服务器传来的消息
+            ws.onmessage = function(e) {
+                show.innerText = e.data
+            }
+        }
+    </script>
+</body>
+</html>
