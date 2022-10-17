@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组的观测</title>
+</head>
+<body>
+    <h1>数组的观测</h1>
+
+    <script>
+        // 保留数组原型
+        const arrayProto = Array.prototype
+        // 将arrayMethods继承自数组原型
+        const arrayMethods = Object.create(arrayProto)
+
+        // AOP(面向切片编程思想)--在不破坏封装的前提下,动态的扩展功能
+        let methodsToPatch = ["push", "pop", "unshift", "shift", "splice", "sort", "reverse"]
+        methodsToPatch.forEach((method) => {
+            arrayMethods[method] = function (...args) {
+                // 保留原型方法的执行结果
+                const result = arrayProto[method].apply(this, args)
+                /**
+                 *  this代表的就是数据本身 比如数据是{a:[1,2,3]} 
+                 *  那么我们使用a.push(4)  this就是a  
+                 *  ob就是a.__ob__ 这个属性就是上段代码增加的
+                 *    代表的是该数据已经被响应式观察过了指向Observer实例
+                 */
+                const ob = this.__ob__
+
+                // 代表数组有新增操作
+                let inserted
+                switch (method) {
+                    case "push":
+                    case "unshift":
+                        inserted = args;
+                        break;
+                    case "splice":
+                        inserted = args.slice(2);
+                    default:
+                        break;
+                }
+
+                // 如果有新增的元素 inserted是一个数组 调用Observer实例的observeArray对数组每一项进行观测
+                if (inserted) ob.observeArray(inserted);
+                // 之后咱们还可以在这里检测到数组改变了之后从而触发视图更新的操作--后续源码会揭晓
+                return result;
+
+            }
+        })
+    </script>
+</body>
+</html>

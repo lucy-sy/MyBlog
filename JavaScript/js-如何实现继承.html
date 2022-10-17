@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 作用：继承可以使子类具有父类的各种属性和方法
+         * 实现方法：
+         *  1. 原型链的继承
+         *  2. 构造函数的继承
+         *  3. 组合继承：原型链继承+构造函数继承
+         */
+
+        /*****************************   1. 原型链的继承 *******************/
+        // function Person() {
+        //     this.name = 'Person'
+        //     this.arr = [1,2,3,4]
+        // }
+        // function Child() {
+        //     this.type = 'child'
+        // }
+        // // 通过改变原型对象来继承
+        // Child.prototype = new Person()
+        // var c1 = new Child()
+        // var c2 = new Child()
+        // c1.arr.push(5)
+        // // 原型链继承的弊端：子类的实例对象使用同一个原型对象
+        // console.log(c1.arr) // [1, 2, 3, 4, 5]
+        // console.log(c2.arr) // [1, 2, 3, 4, 5]
+
+
+        /*****************************   2. 构造函数的继承 *******************/
+        // function Person() {
+        //     this.name = 'Person'
+        //     this.arr = [1,2,3,4]
+        // }
+        // Person.prototype.age = 18
+
+        // function Child() {
+        //     Person.call(this)
+        //     this.type = 'child'
+        // }
+
+        // var c1 = new Child()
+        // var c2 = new Child()
+        // c1.arr.push(5)
+        // console.log(c1.arr) // [1, 2, 3, 4, 5]
+        // console.log(c2.arr) // [1, 2, 3, 4]
+        // // 构造函数继承的弊端：构造函数不能继承原型对象的方法和属性
+        // console.log(new Child().age) // undefined
+
+
+        /*****************************   3. 组合继承 *******************/
+        function Person() {
+            this.name = 'Person'
+            this.arr = [1,2,3,4]
+        }
+        Person.prototype.age = 18
+
+        function Child() {
+            // 构造函数继承
+            Person.call(this)
+            this.type = 'child'
+        }
+        // 原型链继承
+        Child.prototype = new Person()
+        console.log(Child.prototype.constructor) // ƒ Person()
+        Child.prototype.constructor = Child
+        console.log(Child.prototype.constructor) // ƒ Child()
+
+        var c1 = new Child()
+        var c2 = new Child()
+        c1.arr.push(5)
+        console.log(c1.arr) // [1, 2, 3, 4, 5]
+        console.log(c2.arr) // [1, 2, 3, 4]
+        console.log(new Child().age) // 18
+    </script>
+</body>
+</html>

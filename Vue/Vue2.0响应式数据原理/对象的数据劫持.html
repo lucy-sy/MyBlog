@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对象的数据劫持</title>
+</head>
+<body>
+    <h1>对象的数据劫持</h1>
+
+    <script>
+        const data = {
+            name: 'lucy',
+            age: 22,
+            grade: {
+                h1: 90,
+                h2: 85,
+                h3: 86
+            }
+        }
+
+        // 变成响应式数据
+        observer(data)
+
+        function observer(data) {
+            if(typeof data !== 'object' || data === null) {
+                return data
+            }
+
+            // 对象内部通过defineReactive方法
+            for(let key in data) {
+                defineReactive(data, key, data[key])
+            }
+        }
+
+        // 该方法通过使用object.defineProperty实现
+        function defineReactive(data, key, value) {
+            // 若传入的value仍是对象，则继续递归
+            observer(value)
+            
+            Object.defineProperty(data, key, {
+                get() {
+                    console.log('显示视图: ', value)
+                    return value
+                },
+                set(newValue) {
+                    value = newValue
+                    console.log('更新视图：', value)
+                }
+            }) 
+        }
+
+        console.log(data)
+        data.age // 显示视图:  22
+        data.age = 28  // 更新视图： 28
+    </script>
+</body>
+</html>
