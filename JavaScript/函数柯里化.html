@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数柯里化</title>
+</head>
+<body>
+    <script>
+        /** 
+         * 函数柯里化：柯里化通常也称为部分求值，其含义是给函数分步传递参数，每次将传递的参数进行处理后，
+         * 返回一个更具体的函数接收剩下的参数，这中间可以嵌套多层这样的接收部分参数的函数，直至返回最后结果。 
+         */ 
+        function add_1(x, y){
+            return x+y
+        }
+        console.log(add_1(1,2)) // 3
+
+        function add_2(x) {
+            return function(y) {
+                return x+y
+            }
+        }
+        console.log(add_2(1)(2)) // 3
+
+
+        /**
+         * 函数柯里化编程题
+         */ 
+        function sumFn(...args) {
+            return args.reduce((total, el)=>{
+                return total+el
+            })
+        }
+
+        function carrying(fn) {
+            // args数组存放所有将要传递进来的参数
+            const args = []
+            // ... ES6的扩展运算符
+            return function add(...rest) {
+                // 当参数长度为0时，表明此时参数传递完成，计算所有参数的累加和并返回最终的结果值
+                if(rest.length==0){
+                    return fn(...args)
+                }
+                // 若参数长度不为0，则表明参数尚未传递完成，将传递进来的参数压入数组，继续返回接收剩下参数的函数
+                else {
+                    args.push(...rest)
+                    return add
+                }
+            }
+        }
+
+        console.log(carrying(sumFn)(1,2,3)(2,8,4)(5,6)()) // 31
+
+    </script>
+</body>
+</html>

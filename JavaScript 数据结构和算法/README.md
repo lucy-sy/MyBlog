@@ -1022,4 +1022,249 @@ singlyLinked.list(); // 具体控制台
    console.log(circularLinked.list()); // 具体控制台
    ```
 
+
+## 排序
+
+归并排序、快速排序、希尔排序、堆排序的平均时间复杂度都为`O(nlogn)`
+
+### 冒泡排序
+
+### 插入排序
+
+### 选择排序
+
+### 归并排序
+
+1. **思想**
+
+   排序一个数组，先把数组从中间分成前后两部分，然后对前后两部分分别排序，再将排好序的两部分合并在一起，这样整个数组就都有序了。
+
+   分治思想：将一个大问题分解成许多的小问题来解决。
+
+2. **讨论**
+
+   - 归并算法不是原地排序算法
+   - 归并算法是稳定算法
+   - 归并算法时间复杂度是`O(nlogn)`
+
+3. **实现**
+
+   ```js
+   /**
+    * 归并排序：
+    *  采用了分治的思想，将一个大问题分解成许多小的子问题来解决。
+    *  将数组拆分为左右两个子数组，然后再分别将两个子数组继续进行拆分，最后将排好序的子数组逐一进行合并。
+    * 
+    */
+   
+   function mergeSort(arr) {
+       let len = arr.length
+       if(len < 2) return arr
+   
+       // 取数组的中间值
+       let middle = Math.floor(len/2)
+       // 将数组拆分为左右两个子数组
+       let left = arr.slice(0, middle)
+       let right = arr.slice(middle)
+       // 返回排序并合并后的数组
+       return merge(mergeSort(left), mergeSort(right))
+   }
+   
+   // 排序算法
+   function merge(left, right) {
+       let newArr = []
+       while(left.length && right.length) {
+           if(left[0] <= right[0]) {
+               newArr.push(left.shift())
+           } else {
+               newArr.push(right.shift())
+           }
+       }
+       while(left.length) newArr.push(left.shift())
+       while(right.length) newArr.push(right.shift())
+   
+       return newArr
+   }
+   
+   let arr = [1,5,2,8,3,15,4,2,9,6]
+   console.log(mergeSort(arr))
+   ```
+
+### 快速排序
+
+1. **思想**
+
+   - 先找一个基准点（一般指数组的中部），然后数组被该基准点分为两部分，依次与基准点数据比较，如果比它小，放左边；比他大，放右边。
+   - 左右分别用一个空数组去存储比较后的数据。
+   - 最后递归执行上述操作，直到数组长度 <= 1;
+
+2. **优点**
+
+   快速，常用
+
+3. **缺点**
+
+   需要另外两个数组，浪费了内存空间。
+
+4. **实现**
+
+   ```js
+   function quickSort(arr) {
+       let len = arr.length
+       if(len < 2) return arr
+   
+       // 查找基准数（最中间的数。以此为分界线，小于该数的放左边，大于该数的放右边）
+       let middle = Math.floor(len/2)
+       let middleData = arr.splice(middle, 1)
+   
+       let left = []
+       let right = []
+       for(let i=0; i<arr.length; i++) {
+           if(arr[i] <= middleData) {
+               left.push(arr[i])
+           } else {
+               right.push(arr[i])
+           }
+       }
+       // 执行递归操作
+       return quickSort(left).concat(middleData, quickSort(right))
+   }
+   
+   let arr = [1,5,2,8,3,15,4,2,9,6]
+   console.log(quickSort(arr))
+   ```
+
+5. **归并排序和快速排序的区别**
+
+   - 归并排序的处理过程是`自下而上`的，先处理子问题，然后再合并。
+   - 快速排序的处理过程是`自上而下`的，先分区，再处理子问题。
+   - 归并排序是非原地排序的算法。因为合并数组时仍然需要再次排序。
+   - 快速排序是原地排序算法。
+
+### 希尔排序
+
+1. **思想**
+
+   - 先将整个待排序的记录序列分割成为若干子序列。
+   - 分别进行直接插入排序。
+   - 待整个序列中的记录基本有序时，再对全体记录进行依次直接插入排序。
+
+2. **讨论**
+
+   - 希尔排序是原地排序。
+   - 希尔排序不稳定。
+
+3. **实现**
+
+   ```js
+   function shellSort(arr) {
+       let len = arr.length
+    if(len < 2) return arr
+   
+       // 围绕步长进行循环，第一步步长为数组长度的1/2，最后步长为1
+       for(let shellWidth=Math.floor(len/2); shellWidth>=1; shellWidth=Math.floor(shellWidth/2)) {
+           // 从步长长度的那组数组开始进行插入排序
+           for(let i=shellWidth; i<len; i++) {
+               // 同组内元素间进行插入排序
+               let j = i-shellWidth // 同组内的元素，从后往前逐一进行比较
+               while(j>=0 && arr[j]>arr[i]) {
+                   swap(arr, i, j)
+                   i = j
+                   j = j - shellWidth
+               }
+   
+           }
+       }
+       
+       return arr
+   }
+   
+   // 不增加变量，交换数据
+   function swap(arr, i, j) {
+       arr[i] = arr[i] + arr[j]
+       arr[j] = arr[i] - arr[j]
+       arr[i] = arr[i] - arr[j]
+       return arr
+   }
+   
+   
+   // 测试
+   const array = [35, 33, 42, 10, 14, 19, 27, 44];
+   console.log('原始array:', array);
+   shellSort(array)
+   console.log('newArr:', array);
+   
+   ```
+   
+
+### 堆排序
+
+1. **定义**
+
+   - 堆是一个完全二叉树。
+   - 堆中每一个节点的值都必须大于等于（或小于等于）其子树中每个节点的值。
+
+2. **思想**
+
+   - 将初始待排序关键字序列 (R1, R2 .... Rn) 构建成大顶堆，此堆为初始的无序区
+   - 将堆顶元素 R[1] 与最后一个元素 R[n] 交换，此时得到新的无序区 (R1, R2, ..... Rn-1) 和新的有序区 (Rn) ，且满足 R[1, 2 ... n-1] <= R[n]
+   - 由于交换后新的堆顶 R[1] 可能违反堆的性质，因此需要对当前无序区 (R1, R2 ...... Rn-1) 调整为新堆，然后再次将 R[1] 与无序区最后一个元素交换，得到新的无序区 (R1, R2 .... Rn-2) 和新的有序区 (Rn-1, Rn)。不断重复此过程，直到有序区的元素个数为 n - 1，则整个排序过程完成
+
+3. 实现
+
+   ```js
+   function heapSort(arr) {
+       let len = arr.length
+    if(len < 2) return arr
+       
+       // 初始化大顶堆，从第一个非叶子结点开始
+       for(let i=Math.floor(len/2); i>=0; i++) {
+           heap(arr, i, len-1)
+       }
+       // 排序，每一次 for 循环都要找出一个当前的最大值，数组长度-1
+       for(let i=Math.floor(len/2); i>0; i++) {
+           // 根节点与最后一个节点交换
+           swap(arr, 0, i)
+           // 从根节点开始调整，并且最后一个结点已经为当前最大值，不需要再参与比较，所以第三个参数为 i，即比较到最后一个结点前一个即可
+           heap(arr, 0, i)
+   
+       }
+       return arr
+   }
+   
+   // 交换节点
+   function swap(arr, i, j) {
+       arr[i] = arr[i] + arr[j]
+       arr[j] = arr[i] - arr[j]
+       arr[i] = arr[i] - arr[j]
+   }
+   
+   // 使每一个节点i都满足为大顶堆，low表示下界，high表示上界
+   function heap(arr, low, high) {
+       let i = low
+       let j = 2*i+1 // 左子树
+       while(j<=high) {
+           if(j+1<=high && arr[j+1]>arr[j]) {
+               j = j+1
+           }
+   
+           if(arr[i] < arr[j]) {
+               swap(arr, i, j)
+               // i 更新为被交换的孩子结点的索引
+               i = j
+               // j 更新为孩子结点的左孩子的索引
+               j=j*2+1
+           } else {
+               break
+           }
+       }
+   
+   }
+   
+   const array = [4, 6, 8, 5, 9, 1, 2, 5, 3, 2];
+   console.log('原始array:', array);
+   const newArr = heapSort(array);
+   console.log('newArr:', newArr);
+   ```
+   
    

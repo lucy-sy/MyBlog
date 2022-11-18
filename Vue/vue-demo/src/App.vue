@@ -25,7 +25,7 @@ export default {
     eventBus: () => import('./views/组件通信/eventBus/brotherSend.vue'),
     attrsListenersParent: () => import('./views/组件通信/$attrs-$listeners/parent.vue'),
     nextTickShow: () => import('./views/nextTick的使用.vue'),
-    keepAliveUse: () => import('./views/keep-alive使用.vue')
+    keepAliveUse: () => import('./views/keepAlive/keep-alive使用.vue')
   },
 };
 </script>

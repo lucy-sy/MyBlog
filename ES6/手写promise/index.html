@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写promise</title>
+</head>
+<body>
+    <script src="./promise.js"></script>
+    <script>
+        let p = new Promise((resolve,reject)=>{
+            // reject("error")
+            resolve("ok")
+            // throw "throw"
+            // setTimeout(()=>{
+            //     // reject("error")
+            //     resolve("ok")
+            // },1000)
+        })
+        
+
+        // p.then(v=>{console.log(v)}).catch(r=>{console.log(r)})
+
+        // console.log(Promise.resolve(new Promise((resolve,reject)=>{
+        //     reject("error")
+        // })))
+
+        // console.log(Promise.reject(new Promise((resolve,reject)=>{
+        //     resolve("ok")
+        // })))
+
+        let p1 = Promise.reject(3)
+        let p2 = Promise.reject(10)
+        let p3 = new Promise((resolve,reject)=>{
+           setTimeout(()=>{
+               resolve(50)
+           },1000)
+        })
+        let p4 = new Promise((resolve,reject)=>{
+            resolve(5)
+        })
+
+        // let arr = Promise.all([p1,p2,p3])
+        // let arr = Promise.any([p1,p3,p4])
+        let arr = Promise.race([p3,p4])
+        console.log(arr)
+        
+        
+    </script>
+</body>
+</html>

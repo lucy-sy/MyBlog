@@ -14,6 +14,7 @@
          *  1. 原型链的继承
          *  2. 构造函数的继承
          *  3. 组合继承：原型链继承+构造函数继承
+         *  4. 寄生组合式继承
          */
 
         /*****************************   1. 原型链的继承 *******************/
@@ -56,29 +57,53 @@
 
 
         /*****************************   3. 组合继承 *******************/
+        // function Person() {
+        //     this.name = 'Person'
+        //     this.arr = [1,2,3,4]
+        // }
+        // Person.prototype.age = 18
+
+        // function Child() {
+        //     // 构造函数继承
+        //     Person.call(this)
+        //     this.type = 'child'
+        // }
+        // // 原型链继承
+        // Child.prototype = new Person()
+        // console.log(Child.prototype.constructor) // ƒ Person()
+        // Child.prototype.constructor = Child
+        // console.log(Child.prototype.constructor) // ƒ Child()
+
+        // var c1 = new Child()
+        // var c2 = new Child()
+        // c1.arr.push(5)
+        // console.log(c1.arr) // [1, 2, 3, 4, 5]
+        // console.log(c2.arr) // [1, 2, 3, 4]
+        // // 组合式继承的弊端：运行了两次person函数
+        // console.log(new Child().age) // 18
+
+
+        /*****************************   3. 寄生组合式继承 *******************/
         function Person() {
             this.name = 'Person'
             this.arr = [1,2,3,4]
         }
-        Person.prototype.age = 18
-
+        Person.prototype.say = function() {
+            console.log('hello')
+        }
         function Child() {
-            // 构造函数继承
             Person.call(this)
             this.type = 'child'
         }
-        // 原型链继承
-        Child.prototype = new Person()
-        console.log(Child.prototype.constructor) // ƒ Person()
-        Child.prototype.constructor = Child
-        console.log(Child.prototype.constructor) // ƒ Child()
+        // 通过Object.create()创建中间对象，使子类原型和父类原型隔离开，这样就不会收到影响了
+        Child.prototype = Object.create(Person.prototype)
 
-        var c1 = new Child()
-        var c2 = new Child()
-        c1.arr.push(5)
-        console.log(c1.arr) // [1, 2, 3, 4, 5]
-        console.log(c2.arr) // [1, 2, 3, 4]
-        console.log(new Child().age) // 18
+        Child.prototype.constructor = Child
+
+        console.log(Child.prototype.constructor)
+        console.log(Person.prototype.constructor)
+
+
     </script>
 </body>
 </html>

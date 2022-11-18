@@ -6,3 +6,8 @@
 
 [71-简化路径](https://leetcode.cn/problems/simplify-path/)
 
+[20-有效的括号]([20. 有效的括号 - 力扣（LeetCode）](https://leetcode.cn/problems/valid-parentheses/))
+
+## 链表
+
+[203-移除链表元素](https://leetcode.cn/problems/remove-linked-list-elements/)

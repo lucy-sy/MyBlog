@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise.any</title>
+</head>
+<body>
+    <script>
+        function any(arr) {
+            return new Promise((resolve, reject)=>{
+                let isComplete = false;
+                const rejectDataList = new Array(arr.length).fill(undefined);
+                const onFullfilled = (data) => {
+                    if(isComplete) return;
+                    isComplete = true;
+                    resolve(data);
+                }
+                const onReject = (data, i) => {
+                    if(isComplete) return;
+                    rejectDataList[i] = data;
+                    if(rejectDataList.every(item=>item!==undefined)){
+                        reject(rejectDataList);
+                    }
+                }
+                arr.forEach((promise, index) => {
+                    promise.then(
+                        value=>onFullfilled(value),
+                        reason=>onReject(reason, index)
+                    )                    
+                });
+            })
+        }
+        let p1 = new Promise((resolve, reject)=>{
+            resolve('success');
+            // throw '抛出异常了'
+        })
+        let p2 = new Promise((resolve, reject)=>{
+            reject('error')
+        })
+        p = [p1,p2];
+        console.log(any(p));
+    </script>
+</body>
+</html>

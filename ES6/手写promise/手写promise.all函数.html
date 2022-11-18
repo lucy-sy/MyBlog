@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现promise.all</title>
+</head>
+<body>
+    <script>
+        function all(arr) {
+            return new Promise((resolve, reject)=>{
+                let isComplete = false; //数组中查出存在rejected情况，则立即跳出函数
+                const resolveDataList = new Array(arr.length).fill(undefined);
+                const onFillfulled = (data, i) => {
+                    if(isComplete) return;
+                    resolveDataList[i] = data;
+                    // 传入的数组若所有元素都为成功的状态，则返回fullfilled状态的promise
+                    if(resolveDataList.every(item=>item !== undefined)){
+                        resolve(resolveDataList);
+                    }
+                };
+                // 传入的数组若存在元素为失败的状态，则返回rejected状态的promise
+                const onRejected = reason => {
+                    if(isComplete) return;
+                    isComplete = true;
+                    reject(reason);
+                };
+                arr.forEach((promise, index) => {
+                    promise.then(
+                        value => onFillfulled(value, index),
+                        reason => onRejected(reason)
+                    )
+                });
+            })
+
+        }
+
+        let p1 = new Promise((resolve, reject)=>{
+            // reject('error');
+            resolve('success1')
+        })
+        let p2 = new Promise((resolve, reject)=>{
+            resolve('success2')
+        })
+        let p = [p1,p2];
+        console.log(all(p));
+
+    </script>
+</body>
+</html>

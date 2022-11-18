@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现原生的AJAX请求</title>
+</head>
+<body>
+    <script>
+        const ajax = {
+            get(url){
+                return new Promise((resolve, reject)=>{
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('get', url);
+                    xhr.send();
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState === 4){
+                            if(xhr.status>=200 && xhr.status<300){
+                                resolve(xhr.response);
+                            }else{
+                                reject(xhr.status);
+                            }
+                        }
+                    }
+                })
+            },
+
+            post(url, data){
+                return new Promise((resolve, reject)=>{
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('POST', url);
+                    // 设置请求头content-type，用来告诉服务器，浏览器发送的参数是什么格式的字符串
+                    xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+                    data = JSON.stringify(data);
+                    xhr.send(data);
+                    xhr.onreadystatechange = function(){
+                        if(xhr.readyState === 4){
+                            if(xhr.status>=200 && xhr.status<300){
+                                resolve(xhr.response);
+                            }else{
+                                reject(xhr.status);
+                            }
+                        }
+                    }
+
+                })
+            }
+        }
+
+        ajax.get('https://api.gugudata.com/news/joke/demo').then(value=>{
+            console.log(value);
+        }, reason=>{
+            console.log(reason);
+        })
+
+        const data = {
+            pagesize: 8
+        }
+        ajax.post('http://127.0.0.1:8001/joke', data).then(value=>{
+            console.log(value);
+        }, reason=>{
+            console.log(reason);
+        })
+    </script>
+</body>
+</html>

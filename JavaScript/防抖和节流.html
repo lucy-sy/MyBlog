@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防抖函数</title>
+</head>
+<body style="height: 3600px;">
+    <input type="text" id="Input">
+
+    <script>
+        var input = document.getElementById("Input")
+
+        //处理函数
+        function handle() {
+            console.log("松开")
+        }
+        // 防抖函数 定时器实现
+        function debounce(fn, wait) {
+            let timeout = null
+            return function() {
+                // 取消setTimeout()所设定的定时执行操作
+                clearTimeout(timeout)
+                /** timeout为调用setTimeout()函数时所获得的返回值，
+                 ** 使用该返回标识符作为参数，可以取消该setTimeout()所设定的定时执行操作
+                 **/
+                timeout = setTimeout(fn, wait)
+            }
+        }
+        // 节流函数 时间戳实现
+        function throttle(fn, delay) {
+            let lastTime = 0 // 上一次触发的时间
+            return function() {
+                let nowTime = Date.now()
+                if(nowTime - lastTime > delay) {
+                    fn.apply(this)
+                    lastTime = nowTime
+                }
+            }
+        }
+        // 节流函数 定时器实现
+        function throttle(fn, wait) {
+            let timer = null
+            return function() {
+                if(!timer) {
+                    timer = setTimeout(()=>{
+                        fn();
+                        timer = null
+                    }, wait)
+                }
+            }
+        }
+
+        // 节流
+        // input.addEventListener("keyup", throttle(handle, 1000))
+        // window.addEventListener("scroll", throttle(handle, 2000))
+        // 防抖
+        input.addEventListener("keyup", debounce(handle, 3000))
+        window.addEventListener("scroll", debounce(handle, 2000))
+        
+    </script>
+</body>
+</html>

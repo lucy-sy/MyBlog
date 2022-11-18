@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何中断promise链条</title>
+</head>
+<body>
+    <script>
+        let p = new Promise((resolve, reject)=>{
+            resolve('OK');
+        })
+        // 在回调函数中返回一个 pendding 状态的 promise 对象。
+        p.then(value=>{
+            console.log(111)
+            return new Promise(()=>{})
+        }).then(value=>{
+            console.log(222)
+        }).then(value=>{
+            console.log(333)
+        })
+    </script>
+</body>
+</html>

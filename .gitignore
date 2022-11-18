@@ -8,5 +8,8 @@ Vue/vue-demo/babel.config.js
 Vue/vue-demo/node_modules
 Vue/vue-demo/package-lock.json
 Vue/vue-demo/package.json
+Vue/vue-demo/public
+Vue/vue-demo/README.md
+Vue/vue-demo/vue.config.js
 test.js
 

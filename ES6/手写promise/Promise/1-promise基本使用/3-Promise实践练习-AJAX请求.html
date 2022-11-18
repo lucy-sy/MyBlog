@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="Access-Control-Allow-Origin" content="*"> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-header">3-Promise实践练习-AJAX请求</h2>
+        <button class="btn btn-primary" id="btn">发送AJAX请求</button>
+    </div>
+    <script>
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click', function(){
+            const p = new Promise((resolve, reject)=>{
+                // 创建对象
+                const xhr = new XMLHttpRequest();
+                // 初始化
+                xhr.open('GET', 'https://api.gugudata.com/news/joke/demo');
+                // 发送
+                xhr.send();
+                // 处理响应结果
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState === 4){
+                        if(xhr.status>=200 && xhr.status<300){
+                            // 输出响应体
+                            resolve(xhr.response);
+                        } else{
+                            // 输出状态码
+                            reject(xhr.status);
+                        }
+                    }
+                }
+            });
+
+            p.then(value=>{
+                console.log(value);
+            }, reason=>{
+                console.log(reason.status);
+            })
+        })
+    </script>
+</body>
+</html>

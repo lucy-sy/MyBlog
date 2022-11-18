@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,body,div{
+            height: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        .content{
+            background-color: red;
+            padding-left: 200px;
+            padding-right: 150px;
+        }
+        .content > div{
+            float: left;
+        }
+        .left{
+            width: 200px;
+            background-color: rgb(29, 63, 63);
+            margin-left: -200px;
+        }
+        .center{
+            width: 100%;
+            background-color: beige;
+        }
+        .right{
+            width: 150px;
+            margin-right: -150px;
+            background-color: cadetblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="left"></div>
+        <div class="center"></div>
+        <div class="right"></div>
+    </div>
+</body>
+</html>

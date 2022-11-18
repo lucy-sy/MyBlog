@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            background-color: bisque;
+        }
+        .container img{
+            width: 300px;
+            float: left;
+        }
+        /* 设置一个bfc类，将拥有该类的元素都设置为BFC */
+        .bfc {
+            /* 第一种方法：将其设置为浮动元素 */
+            /* float: left;  */
+
+            /* 第二种方法：将其设置为绝对定位 */
+            /* position: absolute; */
+
+            /* 第三种方法：块级元素，overflow不为visible */
+            /* overflow: hidden; */
+
+            /* 第四种方法：flex */
+            /* display: flex; */
+
+            /* 第五种方法：行内块元素 */
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container bfc">
+        <img src="./img/cat.jpg">
+        <!-- p元素也被设置为BFC，则会自动计算其在父元素中的宽度 -->
+        <p class="bfc">喵喵咪。。。</p>
+    </div>
+</body>
+</html>

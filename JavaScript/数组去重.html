@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组去重</title>
+</head>
+<body>
+    <script>
+        let arr = [10,20,50,10,10,10,20,90]
+        /*
+         *@Description：数组去重
+         *@explain: 利用ES6 Set去重
+         *@ClassAuthor: 卢思忆
+         *@Date: 2022-06-28 15:30:06
+        */
+       function unique1(arr) {
+        return Array.from(new Set(arr))
+       }
+    //    console.log(unique1(arr))
+
+       /*
+        *@Description：数组去重
+        *@explain: 利用for嵌套for splice去重
+        *@ClassAuthor: 卢思忆
+        *@Date: 2022-06-28 15:32:21
+       */
+      function unique2(arr) {
+        for (let i=0; i<arr.length; i++) {
+            for (let j=i+1; j<arr.length; j++) {
+                if(arr[i] == arr[j]) {
+                    arr.splice(j, 1)
+                    // 被删除元素后面紧邻的那一个元素也有可能是重复元素，j--为了查看当前位置上的新移进元素是否仍是重复元素
+                    j--
+                }
+            }
+        }
+        return arr
+      }
+    //   console.log(unique2(arr))
+
+    /*
+     *@Description：数组去重
+     *@explain: 利用indexOf去重
+     *@ClassAuthor: 卢思忆
+     *@Date: 2022-06-28 15:44:46
+    */
+      function unique3(arr) {
+        if (!Array.isArray(arr)) {
+            return "arr Error"
+        }
+
+        let array = new Array()
+        for (let i=0; i<arr.length; i++) {
+            if (array.indexOf(arr[i]) == -1) {
+                array.push(arr[i])
+            }
+        }
+        return array
+      }
+    //   console.log(unique3(arr))
+
+    /*
+     *@Description：数组去重
+     *@explain: 利用sort去重
+     *@ClassAuthor: 卢思忆
+     *@Date: 2022-06-28 15:50:53
+    */
+      function unique4(arr) {
+        if (!Array.isArray(arr)) return "arr Error"
+
+        arr = arr.sort()
+        let array = [arr[0]]
+        for (let i=1; i<arr.length; i++) {
+            if (arr[i] != arr[i-1]) {
+                array.push(arr[i])
+            }
+        }
+        return array
+      }
+    //   console.log(unique4(arr))
+
+    /*
+     *@Description：数组去重
+     *@explain: 利用includes去重
+     *@ClassAuthor: 卢思忆
+     *@Date: 2022-06-28 16:08:24
+    */
+   function unique5(arr) {
+    if (!Array.isArray(arr)) return "arr Error"
+
+    let array = new Array()
+    for(let i=0; i<arr.length; i++) {
+        if(!array.includes(arr[i])) {
+            array.push(arr[i])
+        }
+    }
+    return array
+   }
+//    console.log(unique5(arr))
+
+   /*
+    *@Description：数组去重
+    *@explain: 利用filter去重
+    *@ClassAuthor: 卢思忆
+    *@Date: 2022-06-28 16:14:47
+   */
+   function unique6(arr) {
+    return arr.filter((item, index)=>{
+        return arr.indexOf(item, 0) === index
+    })
+   }
+//    console.log(unique6(arr))
+
+   /*
+    *@Description：数组去重
+    *@explain: 利用map去重
+    *@ClassAuthor: 卢思忆
+    *@Date: 2022-06-28 16:21:13
+   */
+    function unique7(arr) {
+            let mapArr = new Map()
+            let array = new Array()
+            for(let i=0;i<arr.length;i++){
+                if(mapArr.has(arr[i])){
+                    mapArr.set(arr[i], true)
+                }else{
+                    mapArr.set(arr[i], false)
+                    array.push(arr[i])
+                }
+            }
+            return array
+    }
+    // console.log(unique7(arr))
+
+    /*
+     *@Description：数组去重
+     *@explain: 利用reduce+includes去重
+     *@ClassAuthor: 卢思忆
+     *@Date: 2022-06-28 16:28:13
+    */
+    function unique8(arr) {
+        return arr.reduce((prev,cur) => prev.includes(cur) ? prev : [...prev,cur],[])
+    }
+    // console.log(unique8(arr))
+
+    /*
+     *@Description：数组去重
+     *@explain: set
+     *@ClassAuthor: 卢思忆
+     *@Date: 2022-06-28 16:48:11
+    */
+    console.log([...new Set(arr)])
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise初体验</title>
+</head>
+<body>
+    <div class="container">
+        <h2 class="page-header">Promise 初体验</h2>
+        <button class="btn btn-primary" id="btn">点击抽奖</button>
+    </div>
+    <script>
+        // 生成随机数
+        function rand(m,n) {
+            return Math.ceil(Math.random()*(n-m+1))+m-1;
+        }
+        // 点击事件的函数
+        function isWinner() {
+            // Promise 形式实现，promise是一个构造函数，需要实例化，参数为函数形式
+            // resolve 解决  函数类型的数据
+            // reject 拒绝  函数类型的数据
+            const p = new Promise((resolve, reject)=>{
+                setTimeout(()=>{
+                    // 获取 1-100 的一个随机数
+                    let n = rand(1, 100);
+                    if(n<=30) {
+                        resolve(n);
+                    } else{
+                        reject(n);
+                    }
+                }, 1000)
+            });
+
+            // 调用then方法
+            p.then((value)=>{
+                alert("恭喜恭喜,奖品为10万 RMB 劳斯莱斯优惠券，中奖数字为"+ value);
+            }, (reason)=>{
+                alert("再接再厉，中奖数字为"+ reason);
+            })
+        }
+
+
+        // 防抖函数
+        function debounce(fn,wait) {
+            var timeout = null;
+            return function(){
+                clearTimeout(timeout);
+                timeout = setTimeout(fn, wait)
+            }
+        }
+
+        /**
+         * 点击按钮，2s后显示是否中奖（30%概率中奖）
+         *      若中奖弹出  “恭喜恭喜,奖品为10万 RMB 劳斯莱斯优惠券”
+         *      若未中奖弹出  “再接再厉”
+         */
+        const btn = document.getElementById('btn');
+        // 绑定单击事件
+        btn.addEventListener('click', isWinner)
+    </script>
+</body>
+</html>
